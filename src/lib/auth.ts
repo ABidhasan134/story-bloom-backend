@@ -41,16 +41,17 @@ export const auth = betterAuth({
     requireEmailVerification: true,
   },
   emailVerification: {
-    sendOnsignUp:true,
+    sendOnsignUp: true,
+    autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url, token }, request) => {
-      try{
+      try {
         const verificationURL = `${process.env.FONTEND_APP_URL}/verify-email/${token}`;
-      const info = await transporter.sendMail({
-        from: '"Story Bloom" <storyBloom@gmail.com>', // sender address
-        to: "abeydhasan134@gmail.com", // list of recipients
-        subject: "story Blooming", // subject line
-        text: "Hello world?", // plain text body
-        html: `<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Arial, sans-serif;">
+        const info = await transporter.sendMail({
+          from: '"Story Bloom" <storyBloom@gmail.com>', // sender address
+          to: "abeydhasan134@gmail.com", // list of recipients
+          subject: "story Blooming", // subject line
+          text: "Hello world?", // plain text body
+          html: `<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Arial, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding:20px;">
     <tr>
       <td align="center">
@@ -110,22 +111,21 @@ export const auth = betterAuth({
     </tr>
   </table>
 </body>`,
-      });
+        });
 
-      console.log("Message sent: %s", info.messageId);
-      }
-      catch(error){
-
-         console.log("*****Email sent for verifytion of story bloom app******")
-         throw error
-         
+        console.log("Message sent: %s", info.messageId);
+      } catch (error) {
+        console.log("*****Email sent for verifytion of story bloom app******");
+        throw error;
       }
     },
     socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID as string, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-        }, 
+      google: {
+        prompt: "select_account consent",
+        accessType: "offline", 
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      },
     },
   },
 });
