@@ -1,11 +1,17 @@
 import { Request, Response } from "express"
-import { PostService } from "./post.service"
-import { Post } from "../../../generated/prisma"
+import { Post } from "../../../generated/prisma/index.js"
+import { PostService } from "./post.service.js"
 
 const createPost=async(req:Request,res:Response)=>{
-    // console.log("create post working",req.body)
     try{
-            const result= await PostService.createPost(req.body as Omit<Post,'id'|'createdAt'|'updatedAt'>)
+        console.log("create post working",req.user)
+        const user=req.user
+        if(!user){
+            return res.status(400).json({
+            message: "Unauthorized",
+        })
+        }
+            const result= await PostService.createPost(req.body,user.id as string)
             res.status(200).json({
     success: true,
     data: result

@@ -16,7 +16,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
-  trustedOrigins: ["http://localhost:4000"],
+  trustedOrigins: ["http://localhost:4000","http://localhost:3000","http://localhost:5000"],
   user: {
     additionalFields: {
       role: {
@@ -41,7 +41,7 @@ export const auth = betterAuth({
     requireEmailVerification: true,
   },
   emailVerification: {
-    sendOnsignUp: true,
+    sendOnSignUp: true,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url, token }, request) => {
       try {
