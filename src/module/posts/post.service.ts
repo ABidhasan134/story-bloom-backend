@@ -1,6 +1,12 @@
 import { Post } from "../../../generated/prisma/index.js";
 import { prisma } from "../../lib/prisma.js";
 
+
+const getAllPost =async()=>{
+  console.log("getting all post")
+  const allPost= await prisma.post.findMany();
+  return allPost;
+}
 const createPost = async (
   data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
   userId: string
@@ -20,4 +26,4 @@ const createPost = async (
   }
 };
 
-export const PostService={createPost}
+export const PostService={createPost,getAllPost}
