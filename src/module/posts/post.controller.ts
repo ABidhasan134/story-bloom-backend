@@ -30,17 +30,19 @@ const getAllPost=async(req:Request,res:Response)=>{
         const {searchValue}= req.query
         console.log(" search value for the all post get", searchValue)
         const searchString= typeof searchValue==='string'?searchValue:undefined;
-        const result =await PostService.getAllPost({searchValue:searchString});
+        const result =await PostService.getAllPost({searchValue:searchString as string});
         return res.status(200).json({
             message:"getting all post from controller",
             result
         })
     }
-    catch(error){
-        console.log("error from the get all post controller");
-        return res.status(500).json({
-            
-        })
-    }
+    catch (error) {
+  console.error(error);
+
+  return res.status(500).json({
+    success: false,
+    message: "Failed to get posts",
+  });
+}
 }
 export const PostController={createPost,getAllPost}
